@@ -1,10 +1,10 @@
 /*
-	graph
-	This problem requires you to implement a basic graph functio
+    graph
+    This problem requires you to implement a basic graph functio
 */
-// I AM NOT DONE
 
 use std::collections::{HashMap, HashSet};
+use std::f32::consts::FRAC_1_PI;
 use std::fmt;
 #[derive(Debug, Clone)]
 pub struct NodeNotInGraph;
@@ -29,7 +29,29 @@ impl Graph for UndirectedGraph {
         &self.adjacency_table
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
-        //TODO
+        let (from, to, weight) = edge;
+        let from_node = from.to_string();
+        let to_node = to.to_string();
+
+        if let Some(neighbors) = self.adjacency_table_mutable().get_mut(&from_node) {
+            neighbors.push((to_node.clone(), weight));
+        } else {
+            self.adjacency_table_mutable()
+                .insert(from_node.clone(), vec![(to_node.clone(), weight)]);
+        }
+
+        if let Some(neighbors) = self.adjacency_table_mutable().get_mut(&to_node) {
+            neighbors.push((from_node, weight));
+        } else {
+            self.adjacency_table_mutable()
+                .insert(to_node, vec![(from_node, weight)]);
+        }
+    }
+
+    fn add_node(&mut self, node: &str) -> bool {
+        self.adjacency_table_mutable()
+            .insert(node.to_string(), Vec::new());
+        true
     }
 }
 pub trait Graph {
@@ -38,7 +60,7 @@ pub trait Graph {
     fn adjacency_table(&self) -> &HashMap<String, Vec<(String, i32)>>;
     fn add_node(&mut self, node: &str) -> bool {
         //TODO
-		true
+        true
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
         //TODO
@@ -63,6 +85,7 @@ pub trait Graph {
 mod test_undirected_graph {
     use super::Graph;
     use super::UndirectedGraph;
+
     #[test]
     fn test_add_edge() {
         let mut graph = UndirectedGraph::new();

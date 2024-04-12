@@ -2,7 +2,6 @@
     heap
     This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -40,13 +39,13 @@ where
         self.items.push(value);
         self.count += 1;
 
-        let mut parent_index = self.count;
-        while parent_index > 1 || (self.comparator)(&value, &self.items[parent_index / 2]) {
-            let tmp = self.items[parent_index - 1];
-            self.items[parent_index - 1] = self.items[(parent_index - 1) / 2];
-            self.items[(parent_index - 1) / 2] = tmp;
+        let mut current_index = self.count;
+        while current_index > 1
+            && (self.comparator)(&self.items[current_index], &self.items[current_index / 2])
+        {
+            self.items.swap(current_index, current_index / 2);
 
-            parent_index /= 2;
+            current_index /= 2;
         }
     }
 
@@ -69,6 +68,30 @@ where
     fn smallest_child_idx(&self, idx: usize) -> usize {
         //TODO
         0
+    }
+
+    fn shift_down(&mut self, index: usize) {
+        let mut target = index; // 交换的目标节点索引
+
+        let left_child = self.left_child_idx(target);
+        let right_child = self.right_child_idx(target);
+
+        if left_child < self.len()
+            && (self.comparator)(&self.items[left_child], &self.items[target])
+        {
+            target = left_child;
+        }
+
+        if right_child < self.len()
+            && (self.comparator)(&self.items[right_child], &self.items[target])
+        {
+            target = right_child;
+        }
+
+        if target != index {
+            self.items.swap(target, index);
+            self.shift_down(target);
+        }
     }
 }
 
@@ -97,9 +120,12 @@ where
         if self.len() == 0 {
             None
         } else {
-            let result = Some(self.items.remove(0));
-            let mut index = 1;
-            while index < 
+            self.items.swap(1, self.count);
+            let result = self.items.pop();
+            self.count -= 1;
+
+            self.shift_down(1);
+
             return result;
         }
     }
