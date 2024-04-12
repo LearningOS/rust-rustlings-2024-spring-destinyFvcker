@@ -20,9 +20,10 @@ fn main() {
         println!("Neither alphabetic nor numeric!");
     }
 
-    let your_character = 'd'; // Finish this line like the example! What's your favorite character?
-                              // Try a letter, try a number, try a special character, try a character
-                              // from a different language than your own, try an emoji!
+    let your_character = '\u{1F600}'; // Finish this line like the example! What's your favorite character?
+                                      // Try a letter, try a number, try a special character, try a character
+                                      // from a different language than your own, try an emoji!
+    println!("{}", your_character);
     if your_character.is_alphabetic() {
         println!("Alphabetical!");
     } else if your_character.is_numeric() {
