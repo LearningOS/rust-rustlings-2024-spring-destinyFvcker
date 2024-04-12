@@ -1,6 +1,6 @@
 /*
-	heap
-	This question requires you to implement a binary heap function
+    heap
+    This question requires you to implement a binary heap function
 */
 // I AM NOT DONE
 
@@ -37,7 +37,17 @@ where
     }
 
     pub fn add(&mut self, value: T) {
-        //TODO
+        self.items.push(value);
+        self.count += 1;
+
+        let mut parent_index = self.count;
+        while parent_index > 1 || (self.comparator)(&value, &self.items[parent_index / 2]) {
+            let tmp = self.items[parent_index - 1];
+            self.items[parent_index - 1] = self.items[(parent_index - 1) / 2];
+            self.items[(parent_index - 1) / 2] = tmp;
+
+            parent_index /= 2;
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -58,7 +68,7 @@ where
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
         //TODO
-		0
+        0
     }
 }
 
@@ -84,8 +94,14 @@ where
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
-        //TODO
-		None
+        if self.len() == 0 {
+            None
+        } else {
+            let result = Some(self.items.remove(0));
+            let mut index = 1;
+            while index < 
+            return result;
+        }
     }
 }
 
